@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: tdl
+  labels:
+    app: grafana
+    tier: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+      tier: observability
+  template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
+        tier: observability
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:7.4.3
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 3000

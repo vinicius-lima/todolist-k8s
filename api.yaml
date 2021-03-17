@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: tdl
+  labels:
+    app: todolist-api
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+      tier: backend
+  template:
+    metadata:
+      name: api
+      labels:
+        app: api
+        tier: backend
+    spec:
+      containers:
+      - name: api
+        image: todo-list:back
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 5000

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular
+  namespace: tdl
+  labels:
+    app: todolist
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todolist
+      tier: frontend
+  template:
+    metadata:
+      name: angular
+      labels:
+        app: todolist
+        tier: frontend
+    spec:
+      containers:
+      - name: angular
+        image: todo-list:front
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80

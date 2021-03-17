@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight
+  namespace: tdl
+  labels:
+    app: redisinsight
+    tier: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redisinsight
+      tier: observability
+  template:
+    metadata:
+      name: redisinsight
+      labels:
+        app: redisinsight
+        tier: observability
+    spec:
+      containers:
+      - name: redisinsight
+        image: redislabs/redisinsight:1.9.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 8001
+        volumeMounts:
+          - mountPath: /db
+            name: redisinsight-data
+      volumes:
+        - name: redisinsight-data
+          persistentVolumeClaim:
+            claimName: redisinsight-pvc

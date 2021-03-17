@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: tdl
+  labels:
+    app: mysql
+    tier: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+      tier: db
+  template:
+    metadata:
+      name: mysql
+      labels:
+        app: mysql
+        tier: db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: admin
+          - name: MYSQL_USER
+            value: api
+          - name: MYSQL_PASSWORD
+            value: api
+          - name: MYSQL_DATABASE
+            value: todo_list
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysql-data
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc
